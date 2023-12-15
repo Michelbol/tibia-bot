@@ -4,8 +4,8 @@ from pynput.keyboard import Key
 class AutoAttack:
 
     LIST_OF_MONSTERS = [
-        'rotworm',
-        'SwampTroll'
+        'ROTWORM',
+        'SWAMPTROLL'
     ]
 
     HOTKEY_TO_ATTACK = Key.space
@@ -17,7 +17,7 @@ class AutoAttack:
         battleAnalyser = BattleAnalyser()
         isAlreadyTarget = battleAnalyser.firstMonsterIsTarget(self.lastPrint)
         monster = battleAnalyser.getFirstMonsterInBattle(self.lastPrint)
-        if(AutoAttack.LIST_OF_MONSTERS.count(monster) > 0 and isAlreadyTarget == False):
+        if(AutoAttack.LIST_OF_MONSTERS.count(monster.upper()) > 0 and isAlreadyTarget == False):
             return self.attack()
 
     def attack(self):
