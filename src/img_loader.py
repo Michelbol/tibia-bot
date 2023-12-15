@@ -5,6 +5,5 @@ def loadImage(path):
     return cv2.imread(path)
 
 def saveImage(path, img):
-    environment = Environment()
-    if(environment.isProduction() != True):
+    if(Environment.isProduction() != True):
         cv2.imwrite(path, img)
