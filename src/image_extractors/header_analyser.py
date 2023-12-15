@@ -17,10 +17,9 @@ class HeaderAnalyser:
         config_tesseract = self.lifeCurrentCrop['config_tesseract']
         lang = 'eng'
         header = cropImage(lastPrint, self.lifeCurrentCrop['x'], self.lifeCurrentCrop['y'], self.lifeCurrentCrop['h'], self.lifeCurrentCrop['w'])
-        headerGray = cv2.cvtColor(header, cv2.COLOR_BGR2GRAY)
-        saveImage('temp_crop/life-gray.png', headerGray)
+        saveImage('temp_crop/life-gray.png', header)
 
-        texto = pytesseract.image_to_string(headerGray, lang, config_tesseract)
+        texto = pytesseract.image_to_string(header, lang, config_tesseract)
         if(texto.count('/') == 1):
             characterLife = texto.split('/');
             trim = re.compile(r'[^\d.,]+')
@@ -37,9 +36,8 @@ class HeaderAnalyser:
         lang = 'eng'
 
         header = cropImage(lastPrint, self.manaCurrentCrop['x'], self.manaCurrentCrop['y'], self.manaCurrentCrop['h'], self.manaCurrentCrop['w'])
-        headerGray = cv2.cvtColor(header, cv2.COLOR_BGR2GRAY)
-        saveImage('temp_crop/mana-gray.png', headerGray)
-        texto = pytesseract.image_to_string(headerGray, lang, config_tesseract)
+        saveImage('temp_crop/mana-gray.png', header)
+        texto = pytesseract.image_to_string(header, lang, config_tesseract)
         trim = re.compile(r'[^\d.,]+')
         result = trim.sub('', texto)
         characterMana = result.split('7')

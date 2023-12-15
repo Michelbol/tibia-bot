@@ -34,25 +34,26 @@ def loadLastPrintSave():
     print('Analisando o print: '+lastPrintSave)
     alreadyAnalisedPrints.append(str(path+lastPrintSave))
     saveImage('temp_crop/original-print.png', img)
-    return img
+    grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    return grayImage, img
 
-def analyseLastPrintSave(lastPrintSave):
+def analyseLastPrintSave(lastPrintSaveGray, lastPrintSave):
     actions = []
     character = Character()
 
     headerLevelBar = HeaderLevelBar()
-    character.level = headerLevelBar.extractLevel(lastPrintSave)
+    character.level = headerLevelBar.extractLevel(lastPrintSaveGray)
 
     character.vocation = 'knight'
     character.maxLife = character.calcLifeByLevel()
     character.maxMana = character.calcManaByLevel()
 
-    skillWindow = SkillsWindow()
-    character.food = skillWindow.extractAllInformationPossible(lastPrintSave)
+    skillWindow = SkillsWindow(lastPrintSaveGray)
+    character.food = skillWindow.extractFood()
 
-    healthBar = RightHealthBar()
-    character.currentLife = healthBar.extractLife(lastPrintSave)
-    character.currentMana = healthBar.extractMana(lastPrintSave)
+    healthBar = RightHealthBar(lastPrintSaveGray)
+    character.currentLife = healthBar.extractLife()
+    character.currentMana = healthBar.extractMana()
 
     healer = Healer()
     actions.append(healer.isNeedToHealLife(character))
@@ -61,8 +62,8 @@ def analyseLastPrintSave(lastPrintSave):
     autoEat = AutoEat()
     actions.append(autoEat.isNeedToEat(character))
 
-    autoAttack = AutoAttack()
-    actions.append(autoAttack.isNeedToAtack(lastPrintSave))
+    autoAttack = AutoAttack(lastPrintSave)
+    actions.append(autoAttack.isNeedToAtack())
 
     return actions
 
@@ -80,13 +81,13 @@ def main():
         tibiaPrinter = TibiaPrinter()
         tibiaPrinter.print()
 
-        lastPrintSave = loadLastPrintSave()
+        [lastPrintSaveGray, lastPrintSave] = loadLastPrintSave()
 
         if(len(lastPrintSave) == 0):
             time.sleep(1)
             continue
 
-        actions = analyseLastPrintSave(lastPrintSave)
+        actions = analyseLastPrintSave(lastPrintSaveGray, lastPrintSave)
         player.execute(actions)
 
         clearTempCrop()
