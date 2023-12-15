@@ -1,7 +1,7 @@
 import os
 
 class Environment:
-    PATH_WINDOWS = '/home/.local/share/CipSoft\ GmbH/Tibia/packages/Tibia/screenshots'
+    PATH_WINDOWS = 'C:/Users/miche/AppData/Local/Tibia/packages/Tibia/screenshots/'
     PATH_LINUX = '/home/michel.reis@db1.com.br/.local/share/CipSoft GmbH/Tibia/packages/Tibia/screenshots/'
     HEADER_ANALYSER_PC_DB1 = {
         'life': {
@@ -54,7 +54,7 @@ class Environment:
 
     RIGHT_HEALTH_BAR_NOTEBOOK = {
         'life': {
-            'x': 1310,
+            'x': 1320,
             'y': 118,
             'h': 14,
             'w': 100,
@@ -81,8 +81,8 @@ class Environment:
 
     HEADER_LEVEL_BAR_NOTEBOOK = {
         'level': {
-            'x': 100,
-            'y': 21,
+            'x': 110,
+            'y': 22,
             'h': 14,
             'w': 50,
             'config_tesseract': '--tessdata-dir tessdata --psm 13'
@@ -115,23 +115,23 @@ class Environment:
     SKILLS_WINDOW_NOTEBOOK = {
         'default': {
             'x': 100,
-            'h': 20,
+            'h': 21,
             'w': 60,
             'config_tesseract': '--tessdata-dir tessdata --psm 13',
             'y': None
         },
         'position': {
-            'level': 18,
+            'level': 22,
             'experience': 40,
             'xp-rate': 52,
             'life': 83,
             'mana': 100,
-            'soul': 116,
-            'capacity': 130,
-            'speed': 144,
+            'soul': 114,
+            'capacity': 128,
+            'speed': 140,
             'food': 158,
             'stamina': 172,
-            'magic-level': 225,
+            'magic-level': 223,
         }
     }
 
