@@ -62,7 +62,7 @@ def analyseLastPrintSave(lastPrintSave):
     actions.append(autoEat.isNeedToEat(character))
 
     autoAttack = AutoAttack()
-    autoAttack.isNeedToAtack(lastPrintSave)
+    actions.append(autoAttack.isNeedToAtack(lastPrintSave))
 
     return actions
 
