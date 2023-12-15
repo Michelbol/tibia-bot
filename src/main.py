@@ -59,6 +59,8 @@ def clearTempCrop():
     path = "temp_crop/"
     dir = os.listdir(path)
     for file in dir:
+        if(file == '.gitkeep'):
+            continue
         os.remove(path+file)
 
 def main():
