@@ -3,6 +3,7 @@ from player import Player
 from character import Character
 from healer import Healer
 from tibia_printer import TibiaPrinter
+from auto_eat import AutoEat
 import os
 import time
 from image_extractors.right_health_bar import RightHealthBar
@@ -52,6 +53,9 @@ def analyseLastPrintSave(lastPrintSave):
     healer = Healer()
     actions.append(healer.isNeedToHealLife(character))
     actions.append(healer.isNeedToHealMana(character))
+
+    autoEat = AutoEat()
+    actions.append(autoEat.isNeedToEat(character))
 
     return actions
 
