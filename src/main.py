@@ -23,6 +23,8 @@ alreadyAnalisedPrints = []
 def loadLastPrintSave():
     path = Environment.resolveScreenshotsPath()
     files = os.listdir(path)
+    if(len(files) == 0):
+        return []
     lastPrintSave = sorted(files)[-1]
     img = loadImage(path+lastPrintSave)
 
@@ -32,7 +34,7 @@ def loadLastPrintSave():
     print('Analisando o print: '+lastPrintSave)
     alreadyAnalisedPrints.append(str(path+lastPrintSave))
     saveImage('temp_crop/original-print.png', img)
-    return loadImage('temp_crop/original-print.png')
+    return img
 
 def analyseLastPrintSave(lastPrintSave):
     actions = []
