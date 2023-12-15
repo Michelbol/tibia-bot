@@ -163,3 +163,6 @@ class Environment:
         if(Environment.isWindows()):
             return Environment.SKILLS_WINDOW_NOTEBOOK
         return Environment.SKILLS_WINDOW_PC_DB1
+    
+    def isProduction(self):
+        return self.isWindows()
