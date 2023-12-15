@@ -4,7 +4,8 @@ from pynput.keyboard import Key
 class AutoAttack:
 
     LIST_OF_MONSTERS = [
-        'rotworm'
+        'rotworm',
+        'SwampTroll'
     ]
 
     HOTKEY_TO_ATTACK = Key.space
