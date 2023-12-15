@@ -19,4 +19,6 @@ class NumberExtractor:
 
         onlyNumbers = re.compile(r'[^\d]+')
         result = onlyNumbers.sub('', texto)
+        if (result == ''):
+            result = 0
         return int(result)
