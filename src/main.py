@@ -4,11 +4,13 @@ from character import Character
 from healer import Healer
 from tibia_printer import TibiaPrinter
 from auto_eat import AutoEat
+from auto_attack import AutoAttack
 import os
 import time
 from image_extractors.right_health_bar import RightHealthBar
 from image_extractors.header_level_bar import HeaderLevelBar
 from image_extractors.skills_window import SkillsWindow
+from image_extractors.battle_analyser import BattleAnalyser
 from environment import Environment
 
 actionExample = {
@@ -56,6 +58,9 @@ def analyseLastPrintSave(lastPrintSave):
 
     autoEat = AutoEat()
     actions.append(autoEat.isNeedToEat(character))
+
+    autoAttack = AutoAttack()
+    autoAttack.isNeedToAtack(lastPrintSave)
 
     return actions
 
