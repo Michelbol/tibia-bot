@@ -1,0 +1,3 @@
+src/__pycache__/
+src/image_extractors/__pycache__/
+temp_crop/*
