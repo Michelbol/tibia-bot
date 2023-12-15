@@ -1,4 +1,5 @@
 from pynput.keyboard import Key, Controller
+import time
 
 class Player:
 
@@ -8,4 +9,5 @@ class Player:
                 print('Irá pressionar a tecla: '+str(action['hotkeyToPress']))
                 keyboard = Controller()
                 keyboard.press(action['hotkeyToPress'])
+                time.sleep(0.1)
                 keyboard.release(action['hotkeyToPress'])
