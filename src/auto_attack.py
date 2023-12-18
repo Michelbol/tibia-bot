@@ -5,7 +5,8 @@ class AutoAttack:
 
     LIST_OF_MONSTERS = [
         'ROTWORM',
-        'SWAMPTROLL'
+        'SWAMPTROLL',
+        'SWAMPLING'
     ]
 
     HOTKEY_TO_ATTACK = Key.space
