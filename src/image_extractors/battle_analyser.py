@@ -53,7 +53,7 @@ class BattleAnalyser:
         points = cv2.findNonZero(headerGray)
         saveImage('temp_crop/battle-analyser-target.png', color_image)
         rect = cv2.boundingRect(points) 
-        return rect == (3,1,20,20)
+        return rect == (3,1,20,20) or rect == (4,1,20,20)
     
 
     def saveBatteHeader(self):
