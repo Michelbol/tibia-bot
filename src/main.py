@@ -13,82 +13,102 @@ from image_extractors.skills_window import SkillsWindow
 from image_extractors.battle_analyser import BattleAnalyser
 from environment import Environment
 
-actionExample = {
-    'hotkeyToPress': 'F1'
-}
+class Main:
+    actionExample: dict = {
+        'hotkeyToPress': 'F1'
+    }
 
-alreadyAnalisedPrints = []
+    alreadyAnalisedPrints: list = []
+    battleAnalyser: BattleAnalyser = None
+    headerLevelBar: HeaderLevelBar = None
+    rightHealthBar: RightHealthBar = None
+    skillsWindow: SkillsWindow = None
+    player: Player = None
+    character: Character = None
 
-def loadLastPrintSave():
-    path = Environment.resolveScreenshotsPath()
-    files = os.listdir(path)
-    if(len(files) == 0):
-        return [], []
-    lastPrintSave = sorted(files)[-1]
-    img = loadImage(path+lastPrintSave)
+    lastPrintSave: list = []
+    lastPrintSaveGray: list = []
 
-    if (alreadyAnalisedPrints.count(path+lastPrintSave) > 0):
-        return [], []
+    def loadLastPrintSave():
+        path = Environment.resolveScreenshotsPath()
+        files = os.listdir(path)
+        if(len(files) == 0):
+            Main.lastPrintSave = []
+            Main.lastPrintSaveGray = []
+            return
+        lastPrintSave = sorted(files)[-1]
+        Main.lastPrintSave = loadImage(path+lastPrintSave)
+
+        if (Main.alreadyAnalisedPrints.count(path+lastPrintSave) > 0):
+            Main.lastPrintSave = []
+            Main.lastPrintSaveGray = []
+            return
+        
+        print('Analisando o print: '+lastPrintSave)
+        Main.alreadyAnalisedPrints.append(str(path+lastPrintSave))
+        saveImage('temp_crop/original-print.png', Main.lastPrintSave)
+        Main.lastPrintSaveGray = cv2.cvtColor(Main.lastPrintSave, cv2.COLOR_BGR2GRAY) 
     
-    print('Analisando o print: '+lastPrintSave)
-    alreadyAnalisedPrints.append(str(path+lastPrintSave))
-    saveImage('temp_crop/original-print.png', img)
-    grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
-    return grayImage, img
+    def fillCharacterInformation():
+        Main.character = Character()
 
-def analyseLastPrintSave(lastPrintSaveGray, lastPrintSave):
-    actions = []
-    character = Character()
+        Main.character.level = Main.headerLevelBar.extractLevel()
 
-    headerLevelBar = HeaderLevelBar()
-    character.level = headerLevelBar.extractLevel(lastPrintSaveGray)
+        Main.character.vocation = 'knight'
+        Main.character.maxLife = Main.character.calcLifeByLevel()
+        Main.character.maxMana = Main.character.calcManaByLevel()
+        Main.character.food = Main.skillsWindow.extractFood()
 
-    character.vocation = 'knight'
-    character.maxLife = character.calcLifeByLevel()
-    character.maxMana = character.calcManaByLevel()
+        Main.character.currentLife = Main.rightHealthBar.extractLife()
+        Main.character.currentMana = Main.rightHealthBar.extractMana()
 
-    skillWindow = SkillsWindow(lastPrintSaveGray)
-    character.food = skillWindow.extractFood()
+    def analyseLastPrintSave(lastPrintSaveGray, lastPrintSave):
+        actions = []
 
-    healthBar = RightHealthBar(lastPrintSaveGray)
-    character.currentLife = healthBar.extractLife()
-    character.currentMana = healthBar.extractMana()
+        Main.fillCharacterInformation()
 
-    healer = Healer()
-    actions.append(healer.isNeedToHealLife(character))
-    actions.append(healer.isNeedToHealMana(character))
+        healer = Healer(Main.character)
+        actions.append(healer.isNeedToHealLife())
+        actions.append(healer.isNeedToHealMana())
 
-    autoEat = AutoEat()
-    actions.append(autoEat.isNeedToEat(character))
+        autoEat = AutoEat()
+        actions.append(autoEat.isNeedToEat(Main.character))
 
-    autoAttack = AutoAttack(lastPrintSave)
-    actions.append(autoAttack.isNeedToAtack())
+        autoAttack = AutoAttack(lastPrintSave)
+        firstMonsterInBattle = Main.battleAnalyser.getFirstMonsterInBattle()
+        isAlreadyAttacking = Main.battleAnalyser.firstMonsterIsTarget()
+        actions.append(autoAttack.isNeedToAtack(firstMonsterInBattle, isAlreadyAttacking))
 
-    return actions
+        return actions
 
-def clearTempCrop():
-    path = "temp_crop/"
-    dir = os.listdir(path) 
-    for file in dir:
-        if(file == '.gitkeep'):
-            continue
-        os.remove(path+file)
+    def clearTempCrop():
+        path = "temp_crop/"
+        dir = os.listdir(path) 
+        for file in dir:
+            if(file == '.gitkeep'):
+                continue
+            os.remove(path+file)
 
-def main():
-    player = Player()
-    while(1):
-        tibiaPrinter = TibiaPrinter()
-        tibiaPrinter.print()
+    def main():
+        Main.player = Player()
+        while(1):
+            tibiaPrinter = TibiaPrinter()
+            tibiaPrinter.print()
 
-        [lastPrintSaveGray, lastPrintSave] = loadLastPrintSave()
-        if(type(lastPrintSave) is list):
-            time.sleep(1)
-            continue
+            Main.loadLastPrintSave()
+            if(type(Main.lastPrintSave) is list):
+                time.sleep(1)
+                continue
 
-        actions = analyseLastPrintSave(lastPrintSaveGray, lastPrintSave)
-        player.execute(actions)
+            Main.battleAnalyser = BattleAnalyser(Main.lastPrintSave)
+            Main.headerLevelBar = HeaderLevelBar(Main.lastPrintSaveGray)
+            Main.rightHealthBar = RightHealthBar(Main.lastPrintSaveGray)
+            Main.skillsWindow = SkillsWindow(Main.lastPrintSaveGray)
 
-        clearTempCrop()
-        time.sleep(2)
+            actions = Main.analyseLastPrintSave(Main.lastPrintSaveGray, Main.lastPrintSave)
+            Main.player.execute(actions)
 
-main()
+            Main.clearTempCrop()
+            time.sleep(2)
+
+Main.main()

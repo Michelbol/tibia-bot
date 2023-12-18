@@ -7,19 +7,22 @@ class Healer:
     percentToHealLife = 80
     percentToFillMana = 80
 
-    def isNeedToHealLife(self, character):
-        if(character.currentLife == None or character.maxLife == None):
+    def __init__(self, character) -> None:
+        self.character = character
+
+    def isNeedToHealLife(self):
+        if(self.character.currentLife == None or self.character.maxLife == None):
             return None
-        if(((character.currentLife / character.maxLife)*100) < Healer.percentToHealLife): 
+        if(((self.character.currentLife / self.character.maxLife)*100) < Healer.percentToHealLife): 
             return {
                 'hotkeyToPress': Healer.hotkeyToHealLife
             }
         return None
     
-    def isNeedToHealMana(self, character):
-        if(character.currentMana == None or character.maxMana == None):
+    def isNeedToHealMana(self):
+        if(self.character.currentMana == None or self.character.maxMana == None):
             return None
-        if(((character.currentMana/character.maxMana)*100) < Healer.percentToFillMana):
+        if(((self.character.currentMana/self.character.maxMana)*100) < Healer.percentToFillMana):
             return {
                 'hotkeyToPress': Healer.hotkeyToFillMana
             }
