@@ -19,22 +19,21 @@ actionExample = {
 
 alreadyAnalisedPrints = []
 
-
 def loadLastPrintSave():
     path = Environment.resolveScreenshotsPath()
     files = os.listdir(path)
     if(len(files) == 0):
-        return []
+        return [], []
     lastPrintSave = sorted(files)[-1]
     img = loadImage(path+lastPrintSave)
 
     if (alreadyAnalisedPrints.count(path+lastPrintSave) > 0):
-        return []
+        return [], []
     
     print('Analisando o print: '+lastPrintSave)
     alreadyAnalisedPrints.append(str(path+lastPrintSave))
     saveImage('temp_crop/original-print.png', img)
-    grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
     return grayImage, img
 
 def analyseLastPrintSave(lastPrintSaveGray, lastPrintSave):
@@ -69,7 +68,7 @@ def analyseLastPrintSave(lastPrintSaveGray, lastPrintSave):
 
 def clearTempCrop():
     path = "temp_crop/"
-    dir = os.listdir(path)
+    dir = os.listdir(path) 
     for file in dir:
         if(file == '.gitkeep'):
             continue
@@ -82,8 +81,7 @@ def main():
         tibiaPrinter.print()
 
         [lastPrintSaveGray, lastPrintSave] = loadLastPrintSave()
-
-        if(len(lastPrintSave) == 0):
+        if(type(lastPrintSave) is list):
             time.sleep(1)
             continue
 
@@ -91,8 +89,6 @@ def main():
         player.execute(actions)
 
         clearTempCrop()
-        time.sleep(1)
-
-
+        time.sleep(2)
 
 main()

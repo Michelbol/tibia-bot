@@ -135,6 +135,32 @@ class Environment:
         }
     }
 
+    BATTLE_CONFIG_DB1 = {
+        'x': 1675,
+        'y': 463,
+        'h': 60,
+        'w': 180,
+        'config_tesseract': '--tessdata-dir tessdata --psm 13',
+    }
+
+    BATTLE_MONSTERS_DB1 = {
+        'y': 1,
+        'h': 22
+    }
+
+    BATTLE_CONFIG_NOTEBOOK = {
+        'x': 1190,
+        'y': 547,
+        'h': 60,
+        'w': 180,
+        'config_tesseract': '--tessdata-dir tessdata --psm 13',
+    }
+
+    BATTLE_MONSTERS_NOTEBOOK = {
+        'y': 3,
+        'h': 22
+    }
+
 
     def isWindows():
         return os.name != 'posix'
@@ -163,6 +189,16 @@ class Environment:
         if(Environment.isWindows()):
             return Environment.SKILLS_WINDOW_NOTEBOOK
         return Environment.SKILLS_WINDOW_PC_DB1
+    
+    def resolveBattleConfigs():
+        if(Environment.isWindows()):
+            return Environment.BATTLE_CONFIG_NOTEBOOK
+        return Environment.BATTLE_CONFIG_DB1
+    
+    def resolveBattleMonsterConfigs():
+        if(Environment.isWindows()):
+            return Environment.BATTLE_MONSTERS_NOTEBOOK
+        return Environment.BATTLE_MONSTERS_DB1
     
     def isProduction():
         return Environment.isWindows()

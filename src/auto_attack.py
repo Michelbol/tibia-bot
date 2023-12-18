@@ -14,13 +14,13 @@ class AutoAttack:
         self.lastPrint = lastPrint
 
     def isNeedToAtack(self):
-        battleAnalyser = BattleAnalyser()
-        isAlreadyTarget = battleAnalyser.firstMonsterIsTarget(self.lastPrint)
-        monster = battleAnalyser.getFirstMonsterInBattle(self.lastPrint)
+        battleAnalyser = BattleAnalyser(self.lastPrint)
+        monster = battleAnalyser.getFirstMonsterInBattle()
+        isAlreadyTarget = battleAnalyser.firstMonsterIsTarget()
         if(AutoAttack.LIST_OF_MONSTERS.count(monster.upper()) > 0 and isAlreadyTarget == False):
             return self.attack()
 
-    def attack(self):
+    def attack(self): 
         return {
                 'hotkeyToPress': AutoAttack.HOTKEY_TO_ATTACK
             }
