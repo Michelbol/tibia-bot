@@ -157,7 +157,7 @@ class Environment:
     }
 
     BATTLE_MONSTERS_NOTEBOOK = {
-        'y': 3,
+        'y': 1,
         'h': 22
     }
 
