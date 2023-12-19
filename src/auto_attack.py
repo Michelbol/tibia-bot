@@ -15,7 +15,7 @@ class AutoAttack:
         self.lastPrint = lastPrint
 
     def isNeedToAtack(self, firstMonsterInBattle, isAlreadyAttacking):
-        if(AutoAttack.LIST_OF_MONSTERS.count(firstMonsterInBattle) > 0 and isAlreadyAttacking == False):
+        if(AutoAttack.LIST_OF_MONSTERS.count(firstMonsterInBattle.upper()) > 0 and isAlreadyAttacking == False):
             return self.attack()
 
     def attack(self): 
