@@ -16,5 +16,8 @@ class MainView:
         start.grid(column=0, row=0, padx=0, pady=0)
         startButton = Button(view, text="Iniciar Bot", command=program.start)   
         startButton.grid(column=0, row=1)
+
+        showViewConfiguration = Button(view, text="Configurações do Bot", command=program.showImageWithConfig)
+        showViewConfiguration.grid(column=0, row=2)
         view.mainloop()
         

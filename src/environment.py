@@ -72,7 +72,7 @@ class Environment:
     HEADER_LEVEL_BAR_PC_DB1 = {
         'level': {
             'x': 200,
-            'y': 21,
+            'y': 20,
             'h': 14,
             'w': 50,
             'config_tesseract': '--tessdata-dir tessdata --psm 13'
@@ -92,7 +92,7 @@ class Environment:
     SKILLS_WINDOW_PC_DB1 = {
         'default': {
             'x': 100,
-            'h': 20,
+            'h': 16,
             'w': 60,
             'config_tesseract': '--tessdata-dir tessdata --psm 13',
             'y': None

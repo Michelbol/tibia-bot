@@ -14,13 +14,8 @@ class BattleAnalyser:
     def getFirstMonsterInBattle(self):
         config_tesseract = self.CURRENT_CROP_CONFIG['config_tesseract']
         lang = 'eng'
-        monster = cropImage(
-            self.lastPrint, 
-            self.CURRENT_CROP_CONFIG['x']+20, 
-            self.CURRENT_CROP_CONFIG['y']+self.CURRENT_CROP_CONFIG['h']+self.CURRENT_CROP_MONSTERS['y'], 
-            self.CURRENT_CROP_MONSTERS['h'],
-            self.CURRENT_CROP_CONFIG['w']-80
-        )
+        coords = BattleAnalyser.generateFirstMonsterCoords(self.CURRENT_CROP_CONFIG,self.CURRENT_CROP_MONSTERS)
+        monster = cropImage(self.lastPrint, coords['x'],coords['y'],coords['h'],coords['w'],)
 
         headerGray = cv2.cvtColor(monster, cv2.COLOR_BGR2GRAY)
         valor, lim_simples4 = cv2.threshold(headerGray,0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)   
@@ -35,12 +30,13 @@ class BattleAnalyser:
         return result
     
     def firstMonsterIsTarget(self):
+        coords = BattleAnalyser.generateFirstMonsterTarget(self.CURRENT_CROP_CONFIG, self.CURRENT_CROP_MONSTERS)
         monster = cropImage(
             self.lastPrint, 
-            self.CURRENT_CROP_CONFIG['x'], 
-            self.CURRENT_CROP_CONFIG['y']+self.CURRENT_CROP_CONFIG['h']+self.CURRENT_CROP_MONSTERS['y'], 
-            self.CURRENT_CROP_MONSTERS['h'],
-            self.CURRENT_CROP_CONFIG['w']-150
+            coords['x'],
+            coords['y'],
+            coords['h'],
+            coords['w'],
         )
         self.saveBatteHeader()
         saveImage('temp_crop/'+'battle-analyser-first-monster.png', monster)
@@ -65,3 +61,19 @@ class BattleAnalyser:
             self.CURRENT_CROP_CONFIG['w']
         )
         saveImage('temp_crop/'+'battle-analyser-header.png', battleHeader)
+
+    def generateFirstMonsterCoords(defaultCords, monsterCords):
+        return {
+            'x': defaultCords['x']+25, 
+            'y': defaultCords['y']+defaultCords['h']+monsterCords['y'], 
+            'h': monsterCords['h'],
+            'w': defaultCords['w']-80
+        }
+    
+    def generateFirstMonsterTarget(defaultCords, monsterCords):
+        return {
+            'x': defaultCords['x'], 
+            'y': defaultCords['y']+defaultCords['h']+monsterCords['y'], 
+            'h': monsterCords['h'],
+            'w': defaultCords['w']-155
+        }

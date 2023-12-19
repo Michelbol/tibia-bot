@@ -111,3 +111,43 @@ class Program:
 
             self.clearTempCrop()
             time.sleep(2)
+
+    def showImageWithConfig(self):
+        rightHealthBar = Environment.resolveRightHealthBar()
+        headerLevelBar = Environment.resolveHeaderLevelBar()
+        skillsWindow = Environment.resolveSkillsWindow()
+        battleConfigs = Environment.resolveBattleConfigs()
+        battleMonsterConfigs = Environment.resolveBattleMonsterConfigs()
+
+        self.loadLastPrintSave()
+
+        self.printRectange(self.lastPrintSave, rightHealthBar['life'])
+        self.printRectange(self.lastPrintSave, rightHealthBar['mana'])
+        self.printRectange(self.lastPrintSave, headerLevelBar['level'])
+        self.printSkillsWindow(self.lastPrintSave, skillsWindow['default'], skillsWindow['position']['food'])
+        self.printRectange(self.lastPrintSave, battleConfigs)
+        self.printRectange(self.lastPrintSave, BattleAnalyser.generateFirstMonsterCoords(battleConfigs, battleMonsterConfigs))
+        self.printRectange(self.lastPrintSave, BattleAnalyser.generateFirstMonsterTarget(battleConfigs, battleMonsterConfigs))
+        
+        
+        cv2.imshow('Configuration Image', self.lastPrintSave)
+        cv2.waitKey(0)
+
+
+    def printRectange(self, image, coords):
+        cv2.rectangle(
+            image, 
+            (coords['x'], coords['y']), 
+            (coords['x']+coords['w'], coords['y']+coords['h']), 
+            (0, 100, 255),
+            2
+        )
+
+    def printSkillsWindow(self, image, default, y):
+        skillPosition = {
+            'x': default['x'],
+            'y': y,
+            'w': default['w'],
+            'h': default['h']
+        }
+        self.printRectange(image, skillPosition)
