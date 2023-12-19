@@ -1,16 +1,16 @@
 from img_loader import *
-from player import Player
-from character import Character
+from models.player import Player
+from models.character import Character
 from macros.auto_healer import AutoHealer
 from macros.auto_printer import AutoPrinter
 from macros.auto_eat import AutoEat
 from macros.auto_attack import AutoAttack
-import os
 import time
 from image_extractors.right_health_bar import RightHealthBar
 from image_extractors.header_level_bar import HeaderLevelBar
 from image_extractors.skills_window import SkillsWindow
 from image_extractors.battle_analyser import BattleAnalyser
+from garbage_collector.delete_files import DeleteFiles
 from environment import Environment
 
 class Program:
@@ -29,26 +29,6 @@ class Program:
 
     lastPrintSave: list = []
     lastPrintSaveGray: list = []
-
-    def loadLastPrintSave(self):
-        path = Environment.resolveScreenshotsPath()
-        files = os.listdir(path)
-        if(len(files) == 0):
-            self.lastPrintSave = []
-            self.lastPrintSaveGray = []
-            return
-        lastPrintSave = sorted(files)[-1]
-        self.lastPrintSave = loadImage(path+lastPrintSave)
-
-        if (self.alreadyAnalisedPrints.count(path+lastPrintSave) > 0):
-            self.lastPrintSave = []
-            self.lastPrintSaveGray = []
-            return
-        
-        print('Analisando o print: '+lastPrintSave)
-        self.alreadyAnalisedPrints.append(str(path+lastPrintSave))
-        saveImage('temp_crop/original-print.png', self.lastPrintSave)
-        self.lastPrintSaveGray = cv2.cvtColor(self.lastPrintSave, cv2.COLOR_BGR2GRAY) 
     
     def fillCharacterInformation(self):
         self.character = Character()
@@ -63,7 +43,7 @@ class Program:
         self.character.currentLife = self.rightHealthBar.extractLife()
         self.character.currentMana = self.rightHealthBar.extractMana()
 
-    def analyseLastPrintSave(self, lastPrintSaveGray, lastPrintSave):
+    def analyseLastPrintSave(self):
         actions = []
 
         self.fillCharacterInformation()
@@ -75,30 +55,23 @@ class Program:
         autoEat = AutoEat()
         actions.append(autoEat.isNeedToEat(self.character))
 
-        autoAttack = AutoAttack(lastPrintSave)
+        autoAttack = AutoAttack()
         firstMonsterInBattle = self.battleAnalyser.getFirstMonsterInBattle()
         isAlreadyAttacking = self.battleAnalyser.firstMonsterIsTarget()
         actions.append(autoAttack.isNeedToAtack(firstMonsterInBattle, isAlreadyAttacking))
 
         return actions
 
-    def clearTempCrop(self):
-        path = "temp_crop/"
-        dir = os.listdir(path) 
-        for file in dir:
-            if(file == '.gitkeep'):
-                continue
-            os.remove(path+file)
-
     def start(self):
         self.player = Player()
+        imgLoader = ImgLoader()
         while(1):
+            DeleteFiles.deleteFilesInFolder(Environment.resolveScreenshotsPath())
             tibiaPrinter = AutoPrinter()
             tibiaPrinter.print()
 
-            self.loadLastPrintSave()
+            self.lastPrintSave, self.lastPrintSaveGray = imgLoader.loadLastPrintSave()
             if(type(self.lastPrintSave) is list):
-                time.sleep(1)
                 continue
 
             self.battleAnalyser = BattleAnalyser(self.lastPrintSave)
@@ -106,48 +79,8 @@ class Program:
             self.rightHealthBar = RightHealthBar(self.lastPrintSaveGray)
             self.skillsWindow = SkillsWindow(self.lastPrintSaveGray)
 
-            actions = self.analyseLastPrintSave(self.lastPrintSaveGray, self.lastPrintSave)
+            actions = self.analyseLastPrintSave()
             self.player.execute(actions)
 
-            self.clearTempCrop()
-            time.sleep(2)
-
-    def showImageWithConfig(self):
-        rightHealthBar = Environment.resolveRightHealthBar()
-        headerLevelBar = Environment.resolveHeaderLevelBar()
-        skillsWindow = Environment.resolveSkillsWindow()
-        battleConfigs = Environment.resolveBattleConfigs()
-        battleMonsterConfigs = Environment.resolveBattleMonsterConfigs()
-
-        self.loadLastPrintSave()
-
-        self.printRectange(self.lastPrintSave, rightHealthBar['life'])
-        self.printRectange(self.lastPrintSave, rightHealthBar['mana'])
-        self.printRectange(self.lastPrintSave, headerLevelBar['level'])
-        self.printSkillsWindow(self.lastPrintSave, skillsWindow['default'], skillsWindow['position']['food'])
-        self.printRectange(self.lastPrintSave, battleConfigs)
-        self.printRectange(self.lastPrintSave, BattleAnalyser.generateFirstMonsterCoords(battleConfigs, battleMonsterConfigs))
-        self.printRectange(self.lastPrintSave, BattleAnalyser.generateFirstMonsterTarget(battleConfigs, battleMonsterConfigs))
-        
-        
-        cv2.imshow('Configuration Image', self.lastPrintSave)
-        cv2.waitKey(0)
-
-
-    def printRectange(self, image, coords):
-        cv2.rectangle(
-            image, 
-            (coords['x'], coords['y']), 
-            (coords['x']+coords['w'], coords['y']+coords['h']), 
-            (0, 100, 255),
-            2
-        )
-
-    def printSkillsWindow(self, image, default, y):
-        skillPosition = {
-            'x': default['x'],
-            'y': y,
-            'w': default['w'],
-            'h': default['h']
-        }
-        self.printRectange(image, skillPosition)
+            DeleteFiles.deleteFilesInFolder('temp_crop/')
+            time.sleep(1)

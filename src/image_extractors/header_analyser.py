@@ -17,7 +17,7 @@ class HeaderAnalyser:
         config_tesseract = self.lifeCurrentCrop['config_tesseract']
         lang = 'eng'
         header = cropImage(lastPrint, self.lifeCurrentCrop['x'], self.lifeCurrentCrop['y'], self.lifeCurrentCrop['h'], self.lifeCurrentCrop['w'])
-        saveImage('temp_crop/life-gray.png', header)
+        ImgLoader.saveImage('temp_crop/life-gray.png', header)
 
         texto = pytesseract.image_to_string(header, lang, config_tesseract)
         if(texto.count('/') == 1):
@@ -36,7 +36,7 @@ class HeaderAnalyser:
         lang = 'eng'
 
         header = cropImage(lastPrint, self.manaCurrentCrop['x'], self.manaCurrentCrop['y'], self.manaCurrentCrop['h'], self.manaCurrentCrop['w'])
-        saveImage('temp_crop/mana-gray.png', header)
+        ImgLoader.saveImage('temp_crop/mana-gray.png', header)
         texto = pytesseract.image_to_string(header, lang, config_tesseract)
         trim = re.compile(r'[^\d.,]+')
         result = trim.sub('', texto)
@@ -65,9 +65,9 @@ class HeaderAnalyser:
 def limiarizacao(headerGray, lang, config_tesseract): 
 
         valor, lim_simples4 = cv2.threshold(headerGray,  0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-        saveImage('temp_crop/life-lim.png', lim_simples4)
+        ImgLoader.saveImage('temp_crop/life-lim.png', lim_simples4)
         texto2 = pytesseract.image_to_data(lim_simples4, lang, config_tesseract, 0, output_type=Output.DICT)
         
         th2 = cv2.adaptiveThreshold(headerGray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 8)
-        saveImage('temp_crop/life-th2.png', th2)
+        ImgLoader.saveImage('temp_crop/life-th2.png', th2)
         texto3 = pytesseract.image_to_string(th2, lang, config_tesseract)

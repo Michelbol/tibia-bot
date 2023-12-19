@@ -11,7 +11,7 @@ class NumberExtractor:
         header = cropImage(lastPrint, CROP_CONFIG['x'], CROP_CONFIG['y'], CROP_CONFIG['h'], CROP_CONFIG['w'])
         valor, lim_simples4 = cv2.threshold(header,0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)   
         invert = 255 - lim_simples4
-        saveImage('temp_crop/'+img_name, header)
+        ImgLoader.saveImage('temp_crop/'+img_name, header)
         
         # dataInvert = pytesseract.image_to_data(invert, lang, '--tessdata-dir tessdata --psm 6', 0, Output.DICT)
         texto = pytesseract.image_to_string(invert, lang, config_tesseract)
