@@ -12,6 +12,7 @@ from image_extractors.skills_window import SkillsWindow
 from image_extractors.battle_analyser import BattleAnalyser
 from garbage_collector.delete_files import DeleteFiles
 from environment import Environment
+import threading
 
 class Program:
 
@@ -61,15 +62,16 @@ class Program:
         actions.append(autoAttack.isNeedToAtack(firstMonsterInBattle, isAlreadyAttacking))
 
         return actions
-
-    def start(self):
-        self.player = Player()
-        imgLoader = ImgLoader()
+    
+    def autoPrinter(self):
         while(1):
-            DeleteFiles.deleteFilesInFolder(Environment.resolveScreenshotsPath())
             tibiaPrinter = AutoPrinter()
             tibiaPrinter.print()
 
+    def analyseView(self):
+        while(1):
+            DeleteFiles.deleteFilesInFolderButNotLastOne(Environment.resolveScreenshotsPath())
+            imgLoader = ImgLoader()
             self.lastPrintSave, self.lastPrintSaveGray = imgLoader.loadLastPrintSave()
             if(type(self.lastPrintSave) is list):
                 continue
@@ -84,3 +86,11 @@ class Program:
 
             DeleteFiles.deleteFilesInFolder('temp_crop/')
             time.sleep(1)
+
+    def start(self):
+        self.player = Player()
+        autoPrinterThread = threading.Thread(target=self.autoPrinter)
+        autoPrinterThread.start()
+        anayseViewThread = threading.Thread(target=self.analyseView)
+        anayseViewThread.start()
+        
