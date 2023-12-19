@@ -3,7 +3,7 @@ import time
 
 HOTKEY_TO_PRINT = Key.scroll_lock
 
-class TibiaPrinter:
+class AutoPrinter:
     
     def print(self):
         keyboard = Controller()

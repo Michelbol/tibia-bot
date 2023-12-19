@@ -1,10 +1,10 @@
 from img_loader import *
 from player import Player
 from character import Character
-from healer import Healer
-from tibia_printer import TibiaPrinter
-from auto_eat import AutoEat
-from auto_attack import AutoAttack
+from macros.auto_healer import AutoHealer
+from auto_printer import AutoPrinter
+from macros.auto_eat import AutoEat
+from macros.auto_attack import AutoAttack
 import os
 import time
 from image_extractors.right_health_bar import RightHealthBar
@@ -68,7 +68,7 @@ class Program:
 
         self.fillCharacterInformation()
 
-        healer = Healer(self.character)
+        healer = AutoHealer(self.character)
         actions.append(healer.isNeedToHealLife())
         actions.append(healer.isNeedToHealMana())
 
@@ -93,7 +93,7 @@ class Program:
     def start(self):
         self.player = Player()
         while(1):
-            tibiaPrinter = TibiaPrinter()
+            tibiaPrinter = AutoPrinter()
             tibiaPrinter.print()
 
             self.loadLastPrintSave()
