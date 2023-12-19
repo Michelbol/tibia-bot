@@ -30,6 +30,12 @@ class Program:
 
     lastPrintSave: list = []
     lastPrintSaveGray: list = []
+
+    settings = {
+        'autoHealing': False,
+        'autoEat': False,
+        'autoAttack': False
+    }
     
     def fillCharacterInformation(self):
         self.character = Character()
@@ -49,17 +55,21 @@ class Program:
 
         self.fillCharacterInformation()
 
-        healer = AutoHealer(self.character)
-        actions.append(healer.isNeedToHealLife())
-        actions.append(healer.isNeedToHealMana())
+        if(self.settings['autoHealing']):
+            healer = AutoHealer(self.character)
+            actions.append(healer.isNeedToHealLife())
+            actions.append(healer.isNeedToHealMana())
+        
 
-        autoEat = AutoEat()
-        actions.append(autoEat.isNeedToEat(self.character))
+        if(self.settings['autoEat']):
+            autoEat = AutoEat()
+            actions.append(autoEat.isNeedToEat(self.character))
 
-        autoAttack = AutoAttack()
-        firstMonsterInBattle = self.battleAnalyser.getFirstMonsterInBattle()
-        isAlreadyAttacking = self.battleAnalyser.firstMonsterIsTarget()
-        actions.append(autoAttack.isNeedToAtack(firstMonsterInBattle, isAlreadyAttacking))
+        if(self.settings['autoAttack']):
+            autoAttack = AutoAttack()
+            firstMonsterInBattle = self.battleAnalyser.getFirstMonsterInBattle()
+            isAlreadyAttacking = self.battleAnalyser.firstMonsterIsTarget()
+            actions.append(autoAttack.isNeedToAtack(firstMonsterInBattle, isAlreadyAttacking))
 
         return actions
     
@@ -86,7 +96,7 @@ class Program:
             DeleteFiles.deleteFilesInFolder('temp_crop/')
             time.sleep(1)
 
-    def clearScreenshotFolder():
+    def clearScreenshotFolder(self):
         while(1):
             DeleteFiles.deleteFilesInFolderButNotLastOne(Environment.resolveScreenshotsPath())
             time.sleep(60)
