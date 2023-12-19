@@ -2,7 +2,7 @@ from img_loader import *
 from player import Player
 from character import Character
 from macros.auto_healer import AutoHealer
-from auto_printer import AutoPrinter
+from macros.auto_printer import AutoPrinter
 from macros.auto_eat import AutoEat
 from macros.auto_attack import AutoAttack
 import os
