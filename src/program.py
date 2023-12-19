@@ -70,7 +70,6 @@ class Program:
 
     def analyseView(self):
         while(1):
-            DeleteFiles.deleteFilesInFolderButNotLastOne(Environment.resolveScreenshotsPath())
             imgLoader = ImgLoader()
             self.lastPrintSave, self.lastPrintSaveGray = imgLoader.loadLastPrintSave()
             if(type(self.lastPrintSave) is list):
@@ -87,10 +86,17 @@ class Program:
             DeleteFiles.deleteFilesInFolder('temp_crop/')
             time.sleep(1)
 
+    def clearScreenshotFolder():
+        while(1):
+            DeleteFiles.deleteFilesInFolderButNotLastOne(Environment.resolveScreenshotsPath())
+            time.sleep(60)
+
     def start(self):
         self.player = Player()
         autoPrinterThread = threading.Thread(target=self.autoPrinter)
         autoPrinterThread.start()
         anayseViewThread = threading.Thread(target=self.analyseView)
         anayseViewThread.start()
+        garbageCollectorThread = threading.Thread(target=self.clearScreenshotFolder)
+        garbageCollectorThread.start()
         
