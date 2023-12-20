@@ -71,7 +71,10 @@ class Program:
             autoAttack = AutoAttack()
             firstMonsterInBattle = self.battleAnalyser.getFirstMonsterInBattle()
             isAlreadyAttacking = self.battleAnalyser.firstMonsterIsTarget()
-            actions.append(autoAttack.isNeedToAtack(firstMonsterInBattle, isAlreadyAttacking))
+            attackCommand = autoAttack.isNeedToAtack(firstMonsterInBattle, isAlreadyAttacking)
+            actions.append(attackCommand)
+            self.player.killMonster(firstMonsterInBattle == '')
+            self.player.isAttacking(isAlreadyAttacking, attackCommand is dict)
 
         return actions
     
@@ -97,6 +100,7 @@ class Program:
             self.player.execute(actions)
 
             DeleteFiles.deleteFilesInFolder('temp_crop/')
+            self.player.printStats()
             time.sleep(1)
             print("--- %s seconds ---" % (time.time() - start_time))
 
