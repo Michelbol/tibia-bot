@@ -6,8 +6,9 @@ import re
 
 class BattleAnalyser: 
 
-    def __init__(self, lastPrint) -> None:
+    def __init__(self, lastPrint, lastPrintGrayLimAndInvert) -> None:
         self.lastPrint = lastPrint
+        self.lastPrintGrayLimAndInvert = lastPrintGrayLimAndInvert
         self.CURRENT_CROP_CONFIG = Environment.resolveBattleConfigs()
         self.CURRENT_CROP_MONSTERS = Environment.resolveBattleMonsterConfigs()
 
@@ -17,13 +18,9 @@ class BattleAnalyser:
         coords = BattleAnalyser.generateFirstMonsterCoords(self.CURRENT_CROP_CONFIG,self.CURRENT_CROP_MONSTERS)
         monster = cropImage(self.lastPrint, coords['x'],coords['y'],coords['h'],coords['w'],)
 
-        headerGray = cv2.cvtColor(monster, cv2.COLOR_BGR2GRAY)
-        valor, lim_simples4 = cv2.threshold(headerGray,0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)   
-        invert = 255 - lim_simples4
         ImgLoader.saveImage('temp_crop/'+'battle-analyser.png', monster)
-        
-        # dataInvert = pytesseract.image_to_data(invert, lang, '--tessdata-dir tessdata --psm 6', 0, Output.DICT)
-        texto = pytesseract.image_to_string(invert, lang, config_tesseract)
+
+        texto = pytesseract.image_to_string(self.lastPrintGrayLimAndInvert, lang, config_tesseract)
         
         onlyLetters = re.compile('[^A-Za-z]+')
         result = onlyLetters.sub('', texto)

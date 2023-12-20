@@ -88,7 +88,7 @@ class Program:
             if(type(self.lastPrintSave) is list):
                 continue
 
-            self.battleAnalyser = BattleAnalyser(self.lastPrintSave)
+            self.battleAnalyser = BattleAnalyser(self.lastPrintSave, self.lastPrintSaveGrayLimAndInvert)
             self.headerLevelBar = HeaderLevelBar(self.lastPrintSaveGrayLimAndInvert)
             self.rightHealthBar = RightHealthBar(self.lastPrintSaveGrayLimAndInvert)
             self.skillsWindow = SkillsWindow(self.lastPrintSaveGrayLimAndInvert)
