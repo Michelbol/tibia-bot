@@ -12,7 +12,7 @@ class PreviewConfig:
         battleMonsterConfigs = Environment.resolveBattleMonsterConfigs()
 
         imgLoader = ImgLoader()
-        lastPrintSave, lastPrintSaveGray = imgLoader.loadLastPrintSave()
+        lastPrintSave, lastPrintSaveGray, lastPrintSaveGrayLimAndInvert = imgLoader.loadLastPrintSave()
         if(lastPrintSaveGray is list):
             return
 
