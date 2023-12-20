@@ -32,6 +32,9 @@ class MainView:
         showViewConfiguration = Button(view, text="Configurações do Bot", command=previewConfig.preview)
         showViewConfiguration.grid(column=1, row=5)
 
+        showViewConfiguration = Button(view, text="Start CaveBot", command=self.program.startCaveBot)
+        showViewConfiguration.grid(column=2, row=5)
+
         self.enableAutoEat = BooleanVar()
         checkboxAutoEat = self.createCheckbox(view, 'Enable AutoEat', self.enableAutoEat, self.configureAutoEat)
         checkboxAutoEat.grid(column=0,row=1)

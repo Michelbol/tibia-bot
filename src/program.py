@@ -12,6 +12,7 @@ from image_extractors.skills_window import SkillsWindow
 from image_extractors.battle_analyser import BattleAnalyser
 from garbage_collector.delete_files import DeleteFiles
 from environment import Environment
+from cave_bot.venore.rotworm import Rotworm
 import threading
 
 class Program:
@@ -30,6 +31,7 @@ class Program:
 
     lastPrintSave: list = []
     lastPrintSaveGray: list = []
+    lastPrintSaveGrayLimAndInvert: list = []
 
     settings = {
         'autoHealing': False,
@@ -81,14 +83,14 @@ class Program:
     def analyseView(self):
         while(1):
             imgLoader = ImgLoader()
-            self.lastPrintSave, self.lastPrintSaveGray = imgLoader.loadLastPrintSave()
+            self.lastPrintSave, self.lastPrintSaveGray, self.lastPrintSaveGrayLimAndInvert = imgLoader.loadLastPrintSave()
             if(type(self.lastPrintSave) is list):
                 continue
 
             self.battleAnalyser = BattleAnalyser(self.lastPrintSave)
-            self.headerLevelBar = HeaderLevelBar(self.lastPrintSaveGray)
-            self.rightHealthBar = RightHealthBar(self.lastPrintSaveGray)
-            self.skillsWindow = SkillsWindow(self.lastPrintSaveGray)
+            self.headerLevelBar = HeaderLevelBar(self.lastPrintSaveGrayLimAndInvert)
+            self.rightHealthBar = RightHealthBar(self.lastPrintSaveGrayLimAndInvert)
+            self.skillsWindow = SkillsWindow(self.lastPrintSaveGrayLimAndInvert)
 
             actions = self.analyseLastPrintSave()
             self.player.execute(actions)
@@ -100,6 +102,10 @@ class Program:
         while(1):
             DeleteFiles.deleteFilesInFolderButNotLastOne(Environment.resolveScreenshotsPath())
             time.sleep(60)
+
+    def startCaveBot(self):
+        rotworm = Rotworm(self.player)
+        rotworm.script()
 
     def start(self):
         self.player = Player()
