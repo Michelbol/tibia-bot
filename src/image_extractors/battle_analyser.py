@@ -20,7 +20,7 @@ class BattleAnalyser:
 
         ImgLoader.saveImage('temp_crop/'+'battle-analyser.png', monster)
 
-        texto = pytesseract.image_to_string(self.lastPrintGrayLimAndInvert, lang, config_tesseract)
+        texto = pytesseract.image_to_string(monster, lang, config_tesseract)
         
         onlyLetters = re.compile('[^A-Za-z]+')
         result = onlyLetters.sub('', texto)
