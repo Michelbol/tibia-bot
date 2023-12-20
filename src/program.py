@@ -82,6 +82,7 @@ class Program:
 
     def analyseView(self):
         while(1):
+            start_time = time.time()
             imgLoader = ImgLoader()
             self.lastPrintSave, self.lastPrintSaveGray, self.lastPrintSaveGrayLimAndInvert = imgLoader.loadLastPrintSave()
             if(type(self.lastPrintSave) is list):
@@ -97,6 +98,7 @@ class Program:
 
             DeleteFiles.deleteFilesInFolder('temp_crop/')
             time.sleep(1)
+            print("--- %s seconds ---" % (time.time() - start_time))
 
     def clearScreenshotFolder(self):
         while(1):
