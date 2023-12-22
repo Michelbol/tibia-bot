@@ -54,7 +54,7 @@ class Environment:
 
     RIGHT_HEALTH_BAR_NOTEBOOK = {
         'life': {
-            'x': 1320,
+            'x': 1310,
             'y': 118,
             'h': 14,
             'w': 100,
