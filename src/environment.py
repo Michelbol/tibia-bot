@@ -167,8 +167,8 @@ class Environment:
     }
 
     PADDING_AUTO_LOOT_NOTEBOOK = {
-        'x': -130,
-        'y': -80
+        'x': -85,
+        'y': -70
     }
 
 

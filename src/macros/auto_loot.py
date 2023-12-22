@@ -2,7 +2,7 @@ from pynput.keyboard import Key, Controller
 import pyautogui
 from environment import Environment
 
-CENTER_SQM_DISTANCE = 80
+CENTER_SQM_DISTANCE = 40
 
 class AutoLoot:
 
