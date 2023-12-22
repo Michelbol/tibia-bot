@@ -62,7 +62,7 @@ class AutoLoot:
         self.executeHotkeyLoot()
 
 
-    def executeHotkeyLoot():
+    def executeHotkeyLoot(self):
         keyboard = Controller()
         keyboard.press(Key.shift)
         pyautogui.rightClick()

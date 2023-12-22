@@ -30,9 +30,11 @@ class Player:
     def killMonster(self, willTarget, isBattleAttacking):
         if(self.stopTargetAndWillAttackAgain(willTarget, isBattleAttacking)):
             self.justKillAMonster = True
+            return;
         
         if(self.stopTargetAndWillNotTargetAgain(willTarget, isBattleAttacking)):
             self.justKillAMonster = True
+            return;
         self.justKillAMonster = False
 
     def stopTargetAndWillNotTargetAgain(self, willTarget, isBattleAttacking):
