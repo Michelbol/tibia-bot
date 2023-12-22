@@ -39,7 +39,8 @@ class Program:
     settings = {
         'autoHealing': False,
         'autoEat': False,
-        'autoAttack': False
+        'autoAttack': False,
+        'autoLoot': False
     }
     
     def fillCharacterInformation(self):
