@@ -1,16 +1,14 @@
 from pynput.keyboard import Key, Controller
 import pyautogui
+from environment import Environment
 
-PADDING = {
-    'x': -130,
-    'y': -80
-}
 CENTER_SQM_DISTANCE = 80
 
 class AutoLoot:
 
     def __init__(self, player) -> None:
         self.player = player
+        self.PADDING = Environment.resolveAutoLootPadding()
     
     def loot(self):
         if(self.player.justKillAMonster):
@@ -70,39 +68,39 @@ class AutoLoot:
         pyautogui.rightClick()
         keyboard.release(Key.shift)
 
-    def getCoordsCenterAutoLoot():
+    def getCoordsCenterAutoLoot(self):
         (x,y) = pyautogui.size()
         (characterX, characterY) = (x/2, y/2)
-        return (characterX+PADDING['x'], characterY+PADDING['y'])
+        return (characterX+self.PADDING['x'], characterY+self.PADDING['y'])
     
-    def getCoordsTopCenter():
-        (middleX, middleY) = AutoLoot.getCoordsCenterAutoLoot()
+    def getCoordsTopCenter(self):
+        (middleX, middleY) = self.getCoordsCenterAutoLoot()
         return (middleX, middleY-CENTER_SQM_DISTANCE)
     
-    def getCoordTopRight():
-        (middleX, middleY) = AutoLoot.getCoordsCenterAutoLoot()
+    def getCoordTopRight(self):
+        (middleX, middleY) = self.getCoordsCenterAutoLoot()
         return (middleX+CENTER_SQM_DISTANCE, middleY-CENTER_SQM_DISTANCE)
     
-    def getCoordCenterRight():
-        (middleX, middleY) = AutoLoot.getCoordsCenterAutoLoot()
+    def getCoordCenterRight(self):
+        (middleX, middleY) = self.getCoordsCenterAutoLoot()
         return (middleX+CENTER_SQM_DISTANCE, middleY)
     
-    def getCoordDownRight():
-        (middleX, middleY) = AutoLoot.getCoordsCenterAutoLoot()
+    def getCoordDownRight(self):
+        (middleX, middleY) = self.getCoordsCenterAutoLoot()
         return (middleX+CENTER_SQM_DISTANCE, middleY+CENTER_SQM_DISTANCE)
     
-    def getCoordDownCenter():
-        (middleX, middleY) = AutoLoot.getCoordsCenterAutoLoot()
+    def getCoordDownCenter(self):
+        (middleX, middleY) = self.getCoordsCenterAutoLoot()
         return (middleX, middleY+CENTER_SQM_DISTANCE)
     
-    def getCoordDownLeft():
-        (middleX, middleY) = AutoLoot.getCoordsCenterAutoLoot()
+    def getCoordDownLeft(self):
+        (middleX, middleY) = self.getCoordsCenterAutoLoot()
         return (middleX-CENTER_SQM_DISTANCE, middleY+CENTER_SQM_DISTANCE)
     
-    def getCoordCenterLeft():
-        (middleX, middleY) = AutoLoot.getCoordsCenterAutoLoot()
+    def getCoordCenterLeft(self):
+        (middleX, middleY) = self.getCoordsCenterAutoLoot()
         return (middleX-CENTER_SQM_DISTANCE, middleY)
     
-    def getCoordTopLeft():
-        (middleX, middleY) = AutoLoot.getCoordsCenterAutoLoot()
+    def getCoordTopLeft(self):
+        (middleX, middleY) = self.getCoordsCenterAutoLoot()
         return (middleX-CENTER_SQM_DISTANCE, middleY-CENTER_SQM_DISTANCE)

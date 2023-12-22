@@ -2,6 +2,7 @@ from img_loader import *
 from environment import Environment
 from image_extractors.battle_analyser import BattleAnalyser
 from macros.auto_loot import AutoLoot
+from models.player import Player
 
 class PreviewConfig:
 
@@ -41,7 +42,9 @@ class PreviewConfig:
         )
 
     def printAutoLootPoint(self, img):
-        (x,y) = AutoLoot.getCoordsCenterAutoLoot()
+        player = Player()
+        autoLoot = AutoLoot(player)
+        (x,y) = autoLoot.getCoordsCenterAutoLoot()
         position = {
             'x': int(x),
             'y': int(y),
@@ -49,42 +52,42 @@ class PreviewConfig:
             'h': 2
         }
         self.printRectange(img, position)
-        (x,y) = AutoLoot.getCoordsTopCenter()
+        (x,y) = autoLoot.getCoordsTopCenter()
         position['x'] = int(x)
         position['y'] = int(y)
         self.printRectange(img, position)
 
-        (x,y) = AutoLoot.getCoordTopRight()
+        (x,y) = autoLoot.getCoordTopRight()
         position['x'] = int(x)
         position['y'] = int(y)
         self.printRectange(img, position)
 
-        (x,y) = AutoLoot.getCoordCenterRight()
+        (x,y) = autoLoot.getCoordCenterRight()
         position['x'] = int(x)
         position['y'] = int(y)
         self.printRectange(img, position)
 
-        (x,y) = AutoLoot.getCoordDownRight()
+        (x,y) = autoLoot.getCoordDownRight()
         position['x'] = int(x)
         position['y'] = int(y)
         self.printRectange(img, position)
 
-        (x,y) = AutoLoot.getCoordDownCenter()
+        (x,y) = autoLoot.getCoordDownCenter()
         position['x'] = int(x)
         position['y'] = int(y)
         self.printRectange(img, position)
 
-        (x,y) = AutoLoot.getCoordDownLeft()
+        (x,y) = autoLoot.getCoordDownLeft()
         position['x'] = int(x)
         position['y'] = int(y)
         self.printRectange(img, position)
 
-        (x,y) = AutoLoot.getCoordCenterLeft()
+        (x,y) = autoLoot.getCoordCenterLeft()
         position['x'] = int(x)
         position['y'] = int(y)
         self.printRectange(img, position)
 
-        (x,y) = AutoLoot.getCoordTopLeft()
+        (x,y) = autoLoot.getCoordTopLeft()
         position['x'] = int(x)
         position['y'] = int(y)
         self.printRectange(img, position)

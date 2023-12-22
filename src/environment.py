@@ -161,6 +161,16 @@ class Environment:
         'h': 22
     }
 
+    PADDING_AUTO_LOOT_DB1 = {
+        'x': -130,
+        'y': -80
+    }
+
+    PADDING_AUTO_LOOT_NOTEBOOK = {
+        'x': -130,
+        'y': -80
+    }
+
 
     def isWindows():
         return os.name != 'posix'
@@ -199,6 +209,11 @@ class Environment:
         if(Environment.isWindows()):
             return Environment.BATTLE_MONSTERS_NOTEBOOK
         return Environment.BATTLE_MONSTERS_DB1
+    
+    def resolveAutoLootPadding():
+        if(Environment.isWindows()):
+            return Environment.PADDING_AUTO_LOOT_NOTEBOOK
+        return Environment.PADDING_AUTO_LOOT_DB1
     
     def isProduction():
         return Environment.isWindows()
