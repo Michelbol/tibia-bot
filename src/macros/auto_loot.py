@@ -12,54 +12,54 @@ class AutoLoot:
     
     def loot(self):
         if(self.player.justKillAMonster):
-          self.lootArroundPlayer()
+            self.lootArroundPlayer()
 
     def lootArroundPlayer(self):
 
         # Click Center
-        pyautogui.moveTo(*AutoLoot.getCoordsCenterAutoLoot())
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordsCenterAutoLoot())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
         # Click Top Center
-        pyautogui.moveTo(*AutoLoot.getCoordsTopCenter())
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordsTopCenter())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
         # Click Top Right
-        pyautogui.moveTo(*AutoLoot.getCoordTopRight())
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordTopRight())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
         #Click Center Right
-        pyautogui.moveTo(*AutoLoot.getCoordCenterRight())
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordCenterRight())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
         #Click Down Right
-        pyautogui.moveTo(*AutoLoot.getCoordDownRight())
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordDownRight())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
         #Click Down Center
-        pyautogui.moveTo(*AutoLoot.getCoordDownCenter())
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordDownCenter())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
         #Click Down Left
-        pyautogui.moveTo(*AutoLoot.getCoordDownLeft())
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordDownLeft())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
         #Click Center Left
-        pyautogui.moveTo(*AutoLoot.getCoordCenterLeft())
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordCenterLeft())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
         #Click Top Left
-        pyautogui.moveTo(0,-50)
-        AutoLoot.executeHotkeyLoot()
-        AutoLoot.executeHotkeyLoot()
+        pyautogui.moveTo(*self.getCoordTopLeft())
+        self.executeHotkeyLoot()
+        self.executeHotkeyLoot()
 
 
     def executeHotkeyLoot(self):
