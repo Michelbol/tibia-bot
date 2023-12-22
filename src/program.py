@@ -81,7 +81,7 @@ class Program:
             player.isAttacking(isBattleAttacking, willAttack)
 
         if(self.settings['autoLoot']):
-            autoLoot = AutoLoot()
+            autoLoot = AutoLoot(player)
             autoLoot.loot()
 
         return actions
