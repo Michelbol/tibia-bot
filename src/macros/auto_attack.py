@@ -11,8 +11,8 @@ class AutoAttack:
 
     HOTKEY_TO_ATTACK = Key.space
 
-    def isNeedToAtack(self, firstMonsterInBattle, isAlreadyAttacking):
-        if(AutoAttack.LIST_OF_MONSTERS.count(firstMonsterInBattle.upper()) > 0 and isAlreadyAttacking == False):
+    def isNeedToAtack(self, firstMonsterInBattle, isBattleAttacking):
+        if(AutoAttack.LIST_OF_MONSTERS.count(firstMonsterInBattle.upper()) > 0 and isBattleAttacking == False):
             return self.attack()
 
     def attack(self): 

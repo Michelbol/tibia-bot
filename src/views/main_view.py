@@ -15,12 +15,15 @@ class MainView:
 
     def configureAutoHealing(self):
         self.program.settings['autoHealing'] = self.enableAutoHealing.get()
+    
+    def configureAutoLoot(self):
+        self.program.settings['autoLoot'] = self.enableAutoLoot.get()
 
     def execute(self):
         self.program = Program()
         previewConfig = PreviewConfig()
         view = Tk()
-        view.geometry('700x600')
+        view.geometry('800x600')
         view.title('Tibia bot')
 
         start = Label(view, text='Configure seu bot antes de iniciar o programa')
@@ -47,6 +50,10 @@ class MainView:
         self.enableAutoHealing = BooleanVar()
         checkboxAutoHealing = self.createCheckbox(view, 'Enable AutoHealing', self.enableAutoHealing, self.configureAutoHealing)
         checkboxAutoHealing.grid(column=2,row=1)
+
+        self.enableAutoLoot = BooleanVar()
+        checkboxAutoLoot = self.createCheckbox(view, 'Enable AutoLoot', self.enableAutoLoot, self.configureAutoLoot)
+        checkboxAutoLoot.grid(column=3,row=1)
         view.mainloop()
 
     def createCheckbox(self, view, title, var, command):

@@ -5,6 +5,7 @@ from macros.auto_healer import AutoHealer
 from macros.auto_printer import AutoPrinter
 from macros.auto_eat import AutoEat
 from macros.auto_attack import AutoAttack
+from macros.auto_loot import AutoLoot
 import time
 from image_extractors.right_health_bar import RightHealthBar
 from image_extractors.header_level_bar import HeaderLevelBar
@@ -14,6 +15,9 @@ from garbage_collector.delete_files import DeleteFiles
 from environment import Environment
 from cave_bot.venore.rotworm import Rotworm
 import threading
+
+player = Player ()
+tibiaPrinter = AutoPrinter()
 
 class Program:
 
@@ -26,7 +30,6 @@ class Program:
     headerLevelBar: HeaderLevelBar = None
     rightHealthBar: RightHealthBar = None
     skillsWindow: SkillsWindow = None
-    player: Player = None
     character: Character = None
 
     lastPrintSave: list = []
@@ -70,20 +73,26 @@ class Program:
         if(self.settings['autoAttack']):
             autoAttack = AutoAttack()
             firstMonsterInBattle = self.battleAnalyser.getFirstMonsterInBattle()
-            isAlreadyAttacking = self.battleAnalyser.firstMonsterIsTarget()
-            attackCommand = autoAttack.isNeedToAtack(firstMonsterInBattle, isAlreadyAttacking)
+            isBattleAttacking = self.battleAnalyser.firstMonsterIsTarget()
+            attackCommand = autoAttack.isNeedToAtack(firstMonsterInBattle, isBattleAttacking)
             actions.append(attackCommand)
-            self.player.killMonster(firstMonsterInBattle == '')
-            self.player.isAttacking(isAlreadyAttacking, attackCommand is dict)
+            willAttack = type(attackCommand) is dict
+            player.killMonster(willAttack, isBattleAttacking)
+            player.isAttacking(isBattleAttacking, willAttack)
+
+        if(self.settings['autoLoot']):
+            autoLoot = AutoLoot()
+            autoLoot.loot()
 
         return actions
     
     def autoPrinter(self):
+        global tibiaPrinter
         while(1):
-            tibiaPrinter = AutoPrinter()
             tibiaPrinter.print()
 
     def analyseView(self):
+        global player
         while(1):
             start_time = time.time()
             imgLoader = ImgLoader()
@@ -97,10 +106,9 @@ class Program:
             self.skillsWindow = SkillsWindow(self.lastPrintSaveGrayLimAndInvert)
 
             actions = self.analyseLastPrintSave()
-            self.player.execute(actions)
+            player.execute(actions)
 
             DeleteFiles.deleteFilesInFolder('temp_crop/')
-            self.player.printStats()
             time.sleep(1)
             print("--- %s seconds ---" % (time.time() - start_time))
 
@@ -110,11 +118,10 @@ class Program:
             time.sleep(60)
 
     def startCaveBot(self):
-        rotworm = Rotworm(self.player)
+        rotworm = Rotworm(player)
         rotworm.script()
 
     def start(self):
-        self.player = Player()
         autoPrinterThread = threading.Thread(target=self.autoPrinter)
         autoPrinterThread.start()
         anayseViewThread = threading.Thread(target=self.analyseView)

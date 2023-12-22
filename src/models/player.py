@@ -27,17 +27,16 @@ class Player:
         self.attacking = False
         return False
 
-    def killMonster(self, monsterMiss):
-        wasAttacking = self.attacking == True
-        if(wasAttacking and monsterMiss):
+    def killMonster(self, willTarget, isBattleAttacking):
+        if(self.stopTargetAndWillAttackAgain(willTarget, isBattleAttacking)):
             self.justKillAMonster = True
-            return True
-        self.justKillAMonster = False
-        return False
         
-    def printStats(self):
-        isAttacking = "Sim" if self.attacking else "Não"
-        print('isAttacking:'+isAttacking)
-        justKillAMonster = "Sim" if self.justKillAMonster else "Não"
-        print('JustKillAMonster:'+ justKillAMonster)
-        print('\n')
+        if(self.stopTargetAndWillNotTargetAgain(willTarget, isBattleAttacking)):
+            self.justKillAMonster = True
+        self.justKillAMonster = False
+
+    def stopTargetAndWillNotTargetAgain(self, willTarget, isBattleAttacking):
+        return willTarget == False and self.attacking == True and isBattleAttacking == False
+
+    def stopTargetAndWillAttackAgain(self, willTarget, isBattleAttacking):
+        return willTarget == True and self.attacking == True and isBattleAttacking == False
