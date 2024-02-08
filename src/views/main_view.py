@@ -1,6 +1,9 @@
 from tkinter import *
 from program import Program
 from views.preview_config import PreviewConfig
+from macros.auto_eat import AutoEat
+from macros.auto_healer import AutoHealer
+from macros.auto_printer import AutoPrinter
 
 class MainView:
 
@@ -29,6 +32,9 @@ class MainView:
         start = Label(view, text='Configure seu bot antes de iniciar o programa')
         start.grid(column=0, row=0, padx=0, pady=0)
 
+        printHotkeyLabel = Label(view, text="PrintScreenHotkey: "+str(AutoPrinter.HOTKEY_TO_PRINT))
+        printHotkeyLabel.grid(column=2, row=0, padx=0, pady=0)
+
         startButton = Button(view, text="Iniciar Bot", command=self.program.start)   
         startButton.grid(column=0, row=5)
 
@@ -39,7 +45,7 @@ class MainView:
         showViewConfiguration.grid(column=2, row=5)
 
         self.enableAutoEat = BooleanVar()
-        checkboxAutoEat = self.createCheckbox(view, 'Enable AutoEat', self.enableAutoEat, self.configureAutoEat)
+        checkboxAutoEat = self.createCheckbox(view, 'Enable AutoEat('+str(AutoEat.hotkeyToEat)+')', self.enableAutoEat, self.configureAutoEat)
         checkboxAutoEat.grid(column=0,row=1)
 
 
@@ -48,7 +54,7 @@ class MainView:
         checkboxAutoAttack.grid(column=1,row=1)
 
         self.enableAutoHealing = BooleanVar()
-        checkboxAutoHealing = self.createCheckbox(view, 'Enable AutoHealing', self.enableAutoHealing, self.configureAutoHealing)
+        checkboxAutoHealing = self.createCheckbox(view, 'Enable AutoHealing(Mana:'+str(AutoHealer.hotkeyToFillMana)+' Life:'+str(AutoHealer.hotkeyToHealLife)+')', self.enableAutoHealing, self.configureAutoHealing)
         checkboxAutoHealing.grid(column=2,row=1)
 
         self.enableAutoLoot = BooleanVar()

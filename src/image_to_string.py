@@ -21,7 +21,7 @@ cv2.waitKey(0)
 config_tesseract = '--tessdata-dir tessdata'
 lang = 'eng'
 
-texto = pytesseract.image_to_string(lim_simples4, lang, config_tesseract)
+texto = pytesseract.image_to_oing(lim_simples4, lang, config_tesseract)
 
 # print(texto)
 

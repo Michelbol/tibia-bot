@@ -8,23 +8,21 @@ class Walk:
     HOTKEY_UP = Key.up
     HOTKEY_DOWN = Key.down
 
-    def __init__(self) -> None:
-        self.keyboard = Controller()
-
-    def walk(self, key):
+    def walk(key):
+        keyboard = Controller()
         time.sleep(3)
-        self.keyboard.press(key)
-        self.keyboard.release(key)
+        keyboard.press(key)
+        keyboard.release(key)
         time.sleep(1)
 
-    def left(self):
-        self.walk(self.HOTKEY_LEFT)
+    def left():
+        Walk.walk(Walk.HOTKEY_LEFT)
 
-    def right(self):
-        self.walk(self.HOTKEY_RIGHT)
+    def right():
+        Walk.walk(Walk.HOTKEY_RIGHT)
 
-    def up(self):
-        self.walk(self.HOTKEY_UP)
+    def up():
+        Walk.walk(Walk.HOTKEY_UP)
 
-    def down(self):
-        self.walk(self.HOTKEY_DOWN)
+    def down():
+        Walk.walk(Walk.HOTKEY_DOWN)
